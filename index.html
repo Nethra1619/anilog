@@ -49,26 +49,21 @@
         transition: 0.2s ease;
     }
 
-    /* Paper blast */
-    .paper {
+    /* Confetti falling */
+    .confetti {
         position: absolute;
-        width: 12px;
-        height: 18px;
-        background: red;
-        opacity: 0.9;
-        border-radius: 3px;
-        animation: fall 2.2s linear forwards, spin 1.5s infinite ease-in-out;
+        width: 30px;
+        height: 30px;
+        background-image: url("confetti.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: fall 2s linear forwards;
         pointer-events: none;
     }
 
     @keyframes fall {
-        0%   { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(600px); opacity: 0; }
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
     }
 </style>
 </head>
@@ -90,37 +85,25 @@
     const eye2 = document.getElementById("eye2");
 
     /* ------------------------------
-       Paper blast on hover
+       Confetti falling on hover
     -------------------------------*/
     welcome.addEventListener("mouseenter", () => {
-        for (let i = 0; i < 25; i++) { // more paper pieces
-            createPaper();
+        for (let i = 0; i < 12; i++) {
+            createConfetti();
         }
     });
 
-    function createPaper() {
-        let paper = document.createElement("div");
-        paper.classList.add("paper");
-
-        // random color
-        const colors = ["#FF4B4B", "#FFD93D", "#6BCB77", "#4D96FF", "#FF6EC7"];
-        paper.style.background = colors[Math.floor(Math.random() * colors.length)];
+    function createConfetti() {
+        let conf = document.createElement("div");
+        conf.classList.add("confetti");
 
         // random x position near welcome text
-        paper.style.left = (window.innerWidth / 2 + (Math.random() * 250 - 125)) + "px";
-        paper.style.top = (window.innerHeight / 2 - 80) + "px";
+        conf.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + "px";
+        conf.style.top = (window.innerHeight / 2 - 80) + "px";
 
-        // random rotation speed
-        paper.style.animationDuration = (1.5 + Math.random() * 1) + "s";
+        document.body.appendChild(conf);
 
-        // random size variation
-        paper.style.width = (8 + Math.random() * 8) + "px";
-        paper.style.height = (10 + Math.random() * 20) + "px";
-
-        document.body.appendChild(paper);
-
-        // remove after animation
-        setTimeout(() => paper.remove(), 2200);
+        setTimeout(() => conf.remove(), 2000);
     }
 
     /* ------------------------------
