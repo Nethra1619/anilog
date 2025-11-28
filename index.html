@@ -3,122 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animated Login Form</title>
+<title>Animated Login</title>
 
 <style>
-    /* ---------- Background Animation ---------- */
     body {
         margin: 0;
         height: 100vh;
-        background: linear-gradient(120deg, #ff9f4a, #ff5f6d, #ffc371);
-        background-size: 300% 300%;
-        animation: bgMove 12s infinite alternate;
+        background: url('bg.jpg') no-repeat center/cover;
         display: flex;
         justify-content: center;
         align-items: center;
         font-family: "Poppins", sans-serif;
+        overflow: hidden;
     }
 
-    @keyframes bgMove {
-        0% { background-position: left; }
-        100% { background-position: right; }
+    /* Falling flower animation */
+    .flower {
+        position: fixed;
+        top: -20px;
+        width: 20px;
+        height: 20px;
+        background-image: url('https://i.imgur.com/0y8Ftya.png'); 
+        background-size: cover;
+        animation: fall 4s linear infinite;
+        opacity: 0.8;
     }
 
-    /* ---------- Login Card ---------- */
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    /* Login card */
     .login-container {
         width: 330px;
         padding: 30px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
         border-radius: 20px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        animation: fadeUp 1s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        text-align: center;
+        position: relative;
+        animation: fadeIn 1s ease;
     }
 
-    @keyframes fadeUp {
-        from { transform: translateY(40px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mascot */
+    .character {
+        width: 120px;
+        margin-bottom: 10px;
+        transition: 0.3s;
     }
 
     h2 {
-        text-align: center;
         color: white;
-        margin-bottom: 20px;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
+        margin: 10px 0 20px;
     }
 
-    /* ---------- Input Styling ---------- */
-    .input-group {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
+    /* Inputs */
     input {
         width: 100%;
-        padding: 12px 15px;
-        border: none;
+        padding: 12px;
         border-radius: 12px;
-        outline: none;
+        border: none;
+        background: rgba(255,255,255,0.3);
+        color: white;
+        margin-bottom: 15px;
         font-size: 15px;
-        background: rgba(255, 255, 255, 0.3);
-        color: #fff;
+        outline: none;
         transition: 0.3s;
     }
 
     input:focus {
-        background: rgba(255, 255, 255, 0.55);
-        transform: scale(1.03);
+        background: rgba(255,255,255,0.55);
+        transform: scale(1.02);
     }
 
-    ::placeholder {
-        color: #fff;
-    }
-
-    /* ---------- Animated Button ---------- */
+    /* Button */
     button {
         width: 100%;
         padding: 12px;
-        border: none;
         border-radius: 12px;
+        border: none;
+        background: linear-gradient(90deg,#ff823c,#ffca55);
+        color: white;
         font-size: 16px;
-        background: linear-gradient(90deg, #ff7336, #ffb347);
-        color: #fff;
         cursor: pointer;
         transition: 0.3s;
-        position: relative;
-        overflow: hidden;
     }
 
     button:hover {
         transform: scale(1.05);
-    }
-
-    button::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(255,255,255,0.4);
-        transition: 0.4s;
-    }
-
-    button:hover::after {
-        left: 100%;
-    }
-
-    /* Link */
-    .link {
-        text-align: center;
-        margin-top: 15px;
-        color: white;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .link:hover {
-        text-decoration: underline;
     }
 </style>
 
@@ -126,20 +106,49 @@
 <body>
 
 <div class="login-container">
-    <h2>Welcome Back</h2>
+    <img id="character" class="character" src="eye-open.png">
 
-    <div class="input-group">
-        <input type="email" placeholder="Email">
-    </div>
+    <h2 id="welcome">WELCOME</h2>
 
-    <div class="input-group">
-        <input type="password" placeholder="Password">
-    </div>
+    <input type="email" placeholder="Email">
+
+    <input id="password" type="password" placeholder="Password">
 
     <button>Login</button>
-
-    <div class="link">Forgot Password?</div>
 </div>
+
+<script>
+    /* Falling Flowers Trigger Near Welcome */
+    const welcome = document.getElementById("welcome");
+
+    welcome.addEventListener("mouseenter", () => {
+        for (let i = 0; i < 20; i++) {
+            let flower = document.createElement("div");
+            flower.classList.add("flower");
+            flower.style.left = Math.random() * window.innerWidth + "px";
+            flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+            flower.style.opacity = Math.random();
+
+            document.body.appendChild(flower);
+
+            setTimeout(() => {
+                flower.remove();
+            }, 5000);
+        }
+    });
+
+    /* Character Eye Blink on Password Typing */
+    const password = document.getElementById("password");
+    const character = document.getElementById("character");
+
+    password.addEventListener("focus", () => {
+        character.src = "eye-close.png";
+    });
+
+    password.addEventListener("blur", () => {
+        character.src = "eye-open.png";
+    });
+</script>
 
 </body>
 </html>
