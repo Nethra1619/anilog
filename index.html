@@ -17,21 +17,28 @@
         overflow: hidden;
     }
 
-    /* Falling flower animation */
-    .flower {
+    /* Confetti falling */
+    .confetti {
         position: fixed;
-        top: -20px;
-        width: 20px;
-        height: 20px;
-        background-image: url('flower.png'); 
+        top: -50px;
+        width: 35px;
+        height: 35px;
+        background-image: url('confetti.png');
         background-size: cover;
-        animation: fall 4s linear infinite;
-        opacity: 0.8;
+        animation: fallConfetti 3.5s linear infinite;
+        opacity: 0.9;
+        pointer-events: none;
     }
 
-    @keyframes fall {
-        0% { transform: translateY(0) rotate(0deg); }
-        100% { transform: translateY(100vh) rotate(360deg); }
+    @keyframes fallConfetti {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(110vh) rotate(360deg);
+            opacity: 0.3;
+        }
     }
 
     /* Login card */
@@ -52,26 +59,27 @@
         100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Mascot */
+    /* Character */
     .character {
-        width: 120px;
+        width: 130px;
         margin-bottom: 10px;
         transition: 0.3s;
     }
 
     h2 {
         color: white;
-        letter-spacing: 2px;
-        margin: 10px 0 20px;
+        letter-spacing: 3px;
+        font-size: 28px;
+        margin: 10px 0 25px;
+        cursor: pointer;
     }
 
-    /* Inputs */
     input {
         width: 100%;
         padding: 12px;
         border-radius: 12px;
         border: none;
-        background: rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.4);
         color: white;
         margin-bottom: 15px;
         font-size: 15px;
@@ -80,11 +88,10 @@
     }
 
     input:focus {
-        background: rgba(255,255,255,0.55);
+        background: rgba(255,255,255,0.6);
         transform: scale(1.02);
     }
 
-    /* Button */
     button {
         width: 100%;
         padding: 12px;
@@ -106,6 +113,8 @@
 <body>
 
 <div class="login-container">
+
+    <!-- Character above -->
     <img id="character" class="character" src="eye-open.png">
 
     <h2 id="welcome">WELCOME</h2>
@@ -115,39 +124,48 @@
     <input id="password" type="password" placeholder="Password">
 
     <button>Login</button>
+
 </div>
 
 <script>
-    /* Falling Flowers Trigger Near Welcome */
-    const welcome = document.getElementById("welcome");
+/* Falling Confetti when mouse goes near WELCOME */
+const welcome = document.getElementById("welcome");
 
-    welcome.addEventListener("mouseenter", () => {
-        for (let i = 0; i < 20; i++) {
-            let flower = document.createElement("div");
-            flower.classList.add("flower");
-            flower.style.left = Math.random() * window.innerWidth + "px";
-            flower.style.animationDuration = (3 + Math.random() * 3) + "s";
-            flower.style.opacity = Math.random();
+welcome.addEventListener("mouseenter", () => {
+    for (let i = 0; i < 30; i++) {
+        let c = document.createElement("div");
+        c.classList.add("confetti");
 
-            document.body.appendChild(flower);
+        // random X position
+        c.style.left = Math.random() * window.innerWidth + "px";
 
-            setTimeout(() => {
-                flower.remove();
-            }, 5000);
-        }
-    });
+        // random size
+        let size = 25 + Math.random() * 35;
+        c.style.width = size + "px";
+        c.style.height = size + "px";
 
-    /* Character Eye Blink on Password Typing */
-    const password = document.getElementById("password");
-    const character = document.getElementById("character");
+        // random fall speed
+        c.style.animationDuration = (2.5 + Math.random() * 3) + "s";
 
-    password.addEventListener("focus", () => {
-        character.src = "eye close.png";
-    });
+        document.body.appendChild(c);
 
-    password.addEventListener("blur", () => {
-        character.src = "eye open.png";
-    });
+        // remove after falling
+        setTimeout(() => c.remove(), 5000);
+    }
+});
+
+
+/* Character closes eyes when typing password */
+const password = document.getElementById("password");
+const character = document.getElementById("character");
+
+password.addEventListener("focus", () => {
+    character.src = "eye-close.png";
+});
+
+password.addEventListener("blur", () => {
+    character.src = "eye-open.png";
+});
 </script>
 
 </body>
