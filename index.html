@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Login Form</title>
+
+<style>
+    /* ---------- Background Animation ---------- */
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(120deg, #ff9f4a, #ff5f6d, #ffc371);
+        background-size: 300% 300%;
+        animation: bgMove 12s infinite alternate;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Poppins", sans-serif;
+    }
+
+    @keyframes bgMove {
+        0% { background-position: left; }
+        100% { background-position: right; }
+    }
+
+    /* ---------- Login Card ---------- */
+    .login-container {
+        width: 330px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        animation: fadeUp 1s ease;
+    }
+
+    @keyframes fadeUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    h2 {
+        text-align: center;
+        color: white;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    /* ---------- Input Styling ---------- */
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 12px;
+        outline: none;
+        font-size: 15px;
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
+        transition: 0.3s;
+    }
+
+    input:focus {
+        background: rgba(255, 255, 255, 0.55);
+        transform: scale(1.03);
+    }
+
+    ::placeholder {
+        color: #fff;
+    }
+
+    /* ---------- Animated Button ---------- */
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        background: linear-gradient(90deg, #ff7336, #ffb347);
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.4);
+        transition: 0.4s;
+    }
+
+    button:hover::after {
+        left: 100%;
+    }
+
+    /* Link */
+    .link {
+        text-align: center;
+        margin-top: 15px;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Welcome Back</h2>
+
+    <div class="input-group">
+        <input type="email" placeholder="Email">
+    </div>
+
+    <div class="input-group">
+        <input type="password" placeholder="Password">
+    </div>
+
+    <button>Login</button>
+
+    <div class="link">Forgot Password?</div>
+</div>
+
+</body>
+</html>
