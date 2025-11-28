@@ -3,107 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paper Blast Confetti</title>
+<title>Welcome Animation</title>
 
 <style>
     body {
         margin: 0;
-        background: url('bg.png') no-repeat center/cover;
+        padding: 0;
+        background: url("bg.png") no-repeat center/cover;
+        font-family: Arial, sans-serif;
         height: 100vh;
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
-        font-family: Poppins, sans-serif;
     }
 
-    .login-box {
+    .welcome-container {
+        position: relative;
         text-align: center;
     }
 
-    #welcome {
-        font-size: 55px;
+    h1 {
+        font-size: 60px;
         color: white;
+        text-shadow: 0 0 10px rgba(0,0,0,0.4);
         cursor: pointer;
-        text-shadow: 0 0 10px black;
     }
 
-    /* Confetti pieces */
+    /* Eyes */
+    .eyes {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .eye {
+        width: 80px;
+        height: 80px;
+    }
+
+    .eye img {
+        width: 100%;
+        height: 100%;
+        transition: 0.2s ease;
+    }
+
+    /* Confetti falling */
     .confetti {
-        position: fixed;
-        top: -20px;
-        opacity: 0.9;
-        animation: fall linear forwards;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-image: url("confetti.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: fall 2s linear forwards;
         pointer-events: none;
-        border-radius: 4px;
     }
 
     @keyframes fall {
-        0% { transform: translateY(0) rotate(0); }
-        100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
     }
 </style>
 </head>
 
 <body>
 
-<div class="login-box">
-    <h1 id="welcome">WELCOME</h1>
+<div class="welcome-container">
+    <h1 id="welcomeText">Welcome</h1>
 
-    <img id="character" src="eye-open.png" width="130">
-    <br><br>
-
-    <input id="email" type="text" placeholder="Email"><br><br>
-    <input id="password" type="password" placeholder="Password"><br><br>
-    <button>Login</button>
+    <div class="eyes">
+        <div class="eye"><img id="eye1" src="eye-open.png"></div>
+        <div class="eye"><img id="eye2" src="eye-open.png"></div>
+    </div>
 </div>
 
 <script>
-/* -------- PAPER CONFETTI BLAST -------- */
+    const welcome = document.getElementById("welcomeText");
+    const eye1 = document.getElementById("eye1");
+    const eye2 = document.getElementById("eye2");
 
-function createPaperPiece() {
-    const piece = document.createElement("div");
-    piece.classList.add("confetti");
+    /* ------------------------------
+       Confetti falling on hover
+    -------------------------------*/
+    welcome.addEventListener("mouseenter", () => {
+        for (let i = 0; i < 12; i++) {
+            createConfetti();
+        }
+    });
 
-    // random shape + size
-    let size = Math.random() * 12 + 8;
-    piece.style.width = size + "px";
-    piece.style.height = size + "px";
+    function createConfetti() {
+        let conf = document.createElement("div");
+        conf.classList.add("confetti");
 
-    // random color paper
-    const colors = ["#FF4F81", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93", "#FF595E"];
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        // random x position near welcome text
+        conf.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + "px";
+        conf.style.top = (window.innerHeight / 2 - 80) + "px";
 
-    // random position across screen
-    piece.style.left = Math.random() * window.innerWidth + "px";
+        document.body.appendChild(conf);
 
-    // random fall speed
-    piece.style.animationDuration = (2 + Math.random() * 2) + "s";
-
-    document.body.appendChild(piece);
-
-    // clean after fall
-    setTimeout(() => piece.remove(), 3500);
-}
-
-/* trigger when hover near welcome */
-document.getElementById("welcome").addEventListener("mouseenter", () => {
-    for (let i = 0; i < 40; i++) {
-        createPaperPiece();
+        setTimeout(() => conf.remove(), 2000);
     }
-});
 
-/* -------- EYE CLOSE ON PASSWORD FOCUS -------- */
-const pw = document.getElementById("password");
-const character = document.getElementById("character");
+    /* ------------------------------
+       Eye blink on hover
+    -------------------------------*/
+    welcome.addEventListener("mouseenter", () => {
+        eye1.src = "eye-close.png";
+        eye2.src = "eye-close.png";
 
-pw.addEventListener("focus", () => {
-    character.src = "eye-close.png";
-});
-
-pw.addEventListener("blur", () => {
-    character.src = "eye-open.png";
-});
+        setTimeout(() => {
+            eye1.src = "eye-open.png";
+            eye2.src = "eye-open.png";
+        }, 300);
+    });
 </script>
 
 </body>
